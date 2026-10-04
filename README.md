@@ -1,8 +1,9 @@
 # Customer Churn Prediction
 
 A small, end-to-end machine-learning project that predicts whether a customer
-will churn. It compares logistic regression with a random forest, evaluates both
-on a stratified holdout set, saves the better model, and can score new CSV files.
+will churn. It compares logistic regression, random forest, and Extra Trees on
+the same stratified holdout set, saves the best-performing model, and can score
+new CSV files.
 
 > The included sample-data generator creates **synthetic demo data**. Its model
 > metrics are not evidence of real-world performance. For real use, train on
@@ -41,9 +42,10 @@ The training command expects a binary target column named `Churn` (`Yes`/`No`,
 2. Excludes customer identifier columns, imputes missing values, scales numeric
    columns, and one-hot encodes categorical columns.
 3. Makes a stratified train/test split (80/20 by default).
-4. Trains logistic regression and random forest models.
-5. Reports accuracy, precision, recall, F1, and ROC-AUC; selects the model with
-   the highest churn F1 (ROC-AUC breaks ties).
+4. Trains logistic regression, random forest, and Extra Trees models.
+5. Compares accuracy, precision, recall, F1, and ROC-AUC for every model in the
+   terminal output and `artifacts/metrics.json`; selects the model with the
+   highest churn F1 (ROC-AUC breaks ties).
 6. Saves the chosen model to `artifacts/churn_model.joblib` and metrics to
    `artifacts/metrics.json`.
 

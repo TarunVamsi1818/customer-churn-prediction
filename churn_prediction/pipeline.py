@@ -10,7 +10,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
@@ -113,7 +113,7 @@ def train_model(
     test_size: float = 0.2,
     random_state: int = 42,
 ) -> dict[str, Any]:
-    """Train two classifiers, select by churn F1, and save model and metrics."""
+    """Compare three classifiers, select by churn F1, and save model and metrics."""
     data_path = Path(data_path)
     if not data_path.is_file():
         raise FileNotFoundError(f"Dataset not found: {data_path}")
@@ -153,6 +153,12 @@ def train_model(
             max_iter=1000, class_weight="balanced", random_state=random_state
         ),
         "random_forest": RandomForestClassifier(
+            n_estimators=300,
+            class_weight="balanced",
+            random_state=random_state,
+            n_jobs=-1,
+        ),
+        "extra_trees": ExtraTreesClassifier(
             n_estimators=300,
             class_weight="balanced",
             random_state=random_state,

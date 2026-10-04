@@ -32,8 +32,17 @@ class TrainingAndPredictionTests(unittest.TestCase):
 
             report = train_model(data_path, output_dir=model_dir, random_state=7)
             self.assertIn(
-                report["selected_model"], {"logistic_regression", "random_forest"}
+                report["selected_model"],
+                {"logistic_regression", "random_forest", "extra_trees"},
             )
+            self.assertEqual(
+                set(report["metrics"]),
+                {"logistic_regression", "random_forest", "extra_trees"},
+            )
+            for metrics in report["metrics"].values():
+                self.assertEqual(
+                    set(metrics), {"accuracy", "precision", "recall", "f1", "roc_auc"}
+                )
             self.assertTrue((model_dir / "churn_model.joblib").is_file())
             self.assertEqual(
                 json.loads((model_dir / "metrics.json").read_text())["rows"], 200
